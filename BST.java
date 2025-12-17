@@ -17,7 +17,8 @@ class BST {
         tree1.insert(70);
         tree1.insert(60);
 
-        System.out.println(tree1.toString());
+        System.out.println(tree1.toString() + "\n height:" + tree1.height(tree1.root)); //prints tree levels
+        
         
 
         System.out.println(tree1.search(25)); //false
@@ -31,7 +32,7 @@ class BST {
         tree1.insert(72);
         tree1.insert(65);
         tree1.toString();
-        System.out.println(tree1.toString());
+        System.out.println(tree1.toString() + "\n height:" + tree1.height(tree1.root));
         System.out.println();
         tree1.printTree();
         //rotateleft and right tests:
@@ -115,17 +116,21 @@ class BST {
                 return i.left; //no right child
             }
 
-            //two children
-            int minimii = i.key;
-            while (i.left != null){
-                minimii = i.left.key;
-                i = i.left;
-            }
-            i.key = minimii;
-
-            i.right = remove2(i.right, i.key);
+            // two children--replace with smallest in right subtree
+            Node minimii = minValueNode(i.right);
+            i.key = minimii.key;
+            i.right = remove2(i.right, minimii.key);
         }
         return i;
+    }
+
+    // Helper: return node with minimum key in subtree rooted at `node`
+    Node minValueNode(Node node){
+        Node current = node;
+        while (current.left != null){
+            current = current.left;
+        }
+        return current;
     }
 
     //precondition: none
@@ -290,6 +295,25 @@ class BST {
         } else {
             prev.right = newRoot;
         }
+    }
+
+    // returns the height of the node 
+    private int height(Node node){
+        if (node == null) {
+            return -1; // height of empty tree is -1
+        }
+        int leftHeight = height(node.left);
+        int rightHeight = height(node.right);
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    //returns the balance at the specified node
+
+    private int balance(Node node){
+        if (node == null) {
+            return 0;
+        }
+        return height(node.left) - height(node.right);
     }
     
 }
