@@ -133,6 +133,73 @@ class BST {
         return current;
     }
 
+
+    // rotates the tree such that the subRoot is replaced with it's right child with subRoot becoming the left child of the new subRoot. prev now points to the new subRoot.
+//precondition: subRoot and prev are not null
+//postcondition: the tree is rotated to the left at the given subRoot, and the tree is updated correctly
+    private void rotateLeft(Node subRoot, Node prev){
+        if (subRoot == null || subRoot.right == null) {
+            return;
+        }
+        
+        Node newRoot = subRoot.right;
+        subRoot.right = newRoot.left;
+        newRoot.left = subRoot;
+        
+        // Update parent's pointer to point to new root
+        if (prev == null) {
+            this.root = newRoot;
+        } else if (prev.left == subRoot) {
+            prev.left = newRoot;
+        } else {
+            prev.right = newRoot;
+        }
+    }
+
+ 
+
+// rotates the tree such that the subRoot is replaced with it's left child with subRoot becoming the right child of the new subRoot. prev now points to the new subRoot.
+//precondition: subRoot and prev are not null
+//postcondition: the tree is rotated to the right at the given subRoot, and the tree is updated correctly
+    private void rotateRight(Node subRoot, Node prev){
+        if (subRoot == null || subRoot.left == null) {
+            return;
+        }
+        
+        Node newRoot = subRoot.left;
+        subRoot.left = newRoot.right;
+        newRoot.right = subRoot;
+        
+        // Update parent's pointer to point to new root
+        if (prev == null) {
+            this.root = newRoot;
+        } else if (prev.left == subRoot) {
+            prev.left = newRoot;
+        } else {
+            prev.right = newRoot;
+        }
+    }
+
+    // returns the height of the node 
+    private int height(Node node){
+        if (node == null) {
+            return -1; // height of empty tree is -1
+        }
+        int leftHeight = height(node.left);
+        int rightHeight = height(node.right);
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    //returns the balance at the specified node
+
+    private int balance(Node node){
+        if (node == null) {
+            return 0;
+        }
+        return height(node.left) - height(node.right);
+    }
+    
+
     //precondition: none
     //post condition: returns a string representation of the tree with each level on a separate line
     public String toString(){ //prints out the tree with each level on a separate line using preorder DFS collected by depth
@@ -167,6 +234,10 @@ class BST {
         buildLevels(node.right, depth + 1, levels);
     }
 
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////
 
     //Add the following functions to your BST
  //Please use this code to verify your tree integrity
@@ -250,70 +321,4 @@ class BST {
     }
    };
 
-
-    // rotates the tree such that the subRoot is replaced with it's right child with subRoot becoming the left child of the new subRoot. prev now points to the new subRoot.
-//precondition: subRoot and prev are not null
-//postcondition: the tree is rotated to the left at the given subRoot, and the tree is updated correctly
-    private void rotateLeft(Node subRoot, Node prev){
-        if (subRoot == null || subRoot.right == null) {
-            return;
-        }
-        
-        Node newRoot = subRoot.right;
-        subRoot.right = newRoot.left;
-        newRoot.left = subRoot;
-        
-        // Update parent's pointer to point to new root
-        if (prev == null) {
-            this.root = newRoot;
-        } else if (prev.left == subRoot) {
-            prev.left = newRoot;
-        } else {
-            prev.right = newRoot;
-        }
-    }
-
- 
-
-// rotates the tree such that the subRoot is replaced with it's left child with subRoot becoming the right child of the new subRoot. prev now points to the new subRoot.
-//precondition: subRoot and prev are not null
-//postcondition: the tree is rotated to the right at the given subRoot, and the tree is updated correctly
-    private void rotateRight(Node subRoot, Node prev){
-        if (subRoot == null || subRoot.left == null) {
-            return;
-        }
-        
-        Node newRoot = subRoot.left;
-        subRoot.left = newRoot.right;
-        newRoot.right = subRoot;
-        
-        // Update parent's pointer to point to new root
-        if (prev == null) {
-            this.root = newRoot;
-        } else if (prev.left == subRoot) {
-            prev.left = newRoot;
-        } else {
-            prev.right = newRoot;
-        }
-    }
-
-    // returns the height of the node 
-    private int height(Node node){
-        if (node == null) {
-            return -1; // height of empty tree is -1
-        }
-        int leftHeight = height(node.left);
-        int rightHeight = height(node.right);
-        return Math.max(leftHeight, rightHeight) + 1;
-    }
-
-    //returns the balance at the specified node
-
-    private int balance(Node node){
-        if (node == null) {
-            return 0;
-        }
-        return height(node.left) - height(node.right);
-    }
-    
 }
